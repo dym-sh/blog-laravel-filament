@@ -16,9 +16,7 @@ protected static string $resource = PostResource::class;
     {
 
     return [
-
-                Actions\ViewAction::make(),
-                        Actions\DeleteAction::make(),
+        Actions\DeleteAction::make(),
         ];
     }
 }

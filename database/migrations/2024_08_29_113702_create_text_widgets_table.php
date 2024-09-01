@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('text_wigets', function (Blueprint $table) {
+        Schema::create('text_widgets', function (Blueprint $table) {
             $table->id();
             $table->string('key')->unique();
             $table->string('image', 2048)->nullable();
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('text_wigets');
+        Schema::dropIfExists('text_widgets');
     }
 };

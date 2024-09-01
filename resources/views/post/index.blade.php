@@ -4,7 +4,8 @@
 ?>
 
 <x-app-layout
-    meta-description="Homepage"
+    :meta-title="'The Blog`s posts about '.$category->title"
+    meta-description="list of posts from the category"
     >
 
 <section class="w-full md:w-2/3 flex flex-col items-center px-3">

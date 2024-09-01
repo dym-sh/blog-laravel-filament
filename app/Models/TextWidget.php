@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Cache;
 
-class TextWiget extends Model
+class TextWidget extends Model
 {
     use HasFactory;
 
@@ -20,17 +20,17 @@ class TextWiget extends Model
 
     public static function getTitle( string $key ): string
     {
-        $wiget = Cache::get( 'text-wiget-'.$key, function() use ($key) {
-            return TextWiget::query()
+        $widget = Cache::get( 'text-widget-'.$key, function() use ($key) {
+            return TextWidget::query()
                 ->where('key', '=', $key)
                 ->where( 'active', '=', 1)
                 ->first();
         });
 
 
-        if( $wiget )
+        if( $widget )
         {
-            return $wiget->title;
+            return $widget->title;
         }
 
         return '';
@@ -39,16 +39,16 @@ class TextWiget extends Model
 
     public static function getContent( string $key ): string
     {
-        $wiget = Cache::get( 'text-wiget-'.$key, function() use ($key) {
-            return TextWiget::query()
+        $widget = Cache::get( 'text-widget-'.$key, function() use ($key) {
+            return TextWidget::query()
                 ->where('key', '=', $key)
                 ->where( 'active', '=', 1)
                 ->first();
         });
 
-        if( $wiget )
+        if( $widget )
         {
-            return $wiget->content;
+            return $widget->content;
         }
 
         return '';

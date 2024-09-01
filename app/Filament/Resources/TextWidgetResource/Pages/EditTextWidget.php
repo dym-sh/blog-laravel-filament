@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\TextWigetResource\Pages;
+namespace App\Filament\Resources\TextWidgetResource\Pages;
 
-use App\Filament\Resources\TextWigetResource;
+use App\Filament\Resources\TextWidgetResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditTextWiget extends EditRecord
+class EditTextWidget extends EditRecord
 {
-    protected static string $resource = TextWigetResource::class;
+    protected static string $resource = TextWidgetResource::class;
 
     protected function getHeaderActions(): array
     {

@@ -2,9 +2,9 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\TextWigetResource\Pages;
-use App\Filament\Resources\TextWigetResource\RelationManagers;
-use App\Models\TextWiget;
+use App\Filament\Resources\TextWidgetResource\Pages;
+use App\Filament\Resources\TextWidgetResource\RelationManagers;
+use App\Models\TextWidget;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -13,9 +13,9 @@ use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class TextWigetResource extends Resource
+class TextWidgetResource extends Resource
 {
-    protected static ?string $model = TextWiget::class;
+    protected static ?string $model = TextWidget::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
 
@@ -76,9 +76,9 @@ class TextWigetResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListTextWigets::route('/'),
-            'create' => Pages\CreateTextWiget::route('/create'),
-            'edit' => Pages\EditTextWiget::route('/{record}/edit'),
+            'index' => Pages\ListTextWidgets::route('/'),
+            'create' => Pages\CreateTextWidget::route('/create'),
+            'edit' => Pages\EditTextWidget::route('/{record}/edit'),
         ];
     }
 }
