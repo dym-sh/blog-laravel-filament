@@ -26,7 +26,9 @@
                   {{ $post->getFormattedDate() }}
               </p>
 
-              {!! $post->body !!}
+                {!! $post->body !!}
+
+              <livewire:upvote-downvote :post="$post" />
           </div>
       </article>
 
