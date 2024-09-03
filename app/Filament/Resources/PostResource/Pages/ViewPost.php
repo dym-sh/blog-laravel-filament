@@ -5,23 +5,21 @@ namespace App\Filament\Resources\PostResource\Pages;
 use App\Filament\Resources\PostResource;
 use App\Filament\Widgets\PostOverview;
 use Filament\Actions;
-use Filament\Resources\Pages\EditRecord;
+use Filament\Resources\Pages\ViewRecord;
 
-class EditPost extends EditRecord
+class ViewPost extends ViewRecord
 {
 
 protected static string $resource = PostResource::class;
 
 
-        protected function getHeaderActions(): array
+    protected function getHeaderActions(): array
     {
 
-    return [
-        Actions\ViewAction::make(),
-        Actions\DeleteAction::make(),
+      return [
+        Actions\EditAction::make(),
         ];
     }
-
 
     protected function getHeaderWidgets(): array
     {
