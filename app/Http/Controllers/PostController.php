@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Post;
 use App\Models\PostView;
 use Carbon\Carbon;
+use DB;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -15,15 +16,37 @@ class PostController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(): View
+    public function home(): View
     {
-        $posts = Post::query()
-            ->where('active', '=', 1)
-            ->whereDate('published_at', '<', Carbon::now() )
+        // latest posts
+        $latestPost = Post::where('active', '=', 1)
+            ->whereDate('published_at', '<', Carbon::now())
             ->orderBy('published_at', 'desc')
-            ->paginate(10);
+            ->limit(1)
+            ->first();
 
-        return view( 'home', compact('posts') );
+        // show the most popular 3 posts based on upvotes
+        $popularPosts = Post::query()
+            ->leftJoin('upvote_downvotes', 'posts.id', '=', 'upvote_downvotes.post_id')
+            ->select('posts.*', DB::raw('count(upvote_downvotes.id) as upvote_count'))
+            ->where(function($query){
+                $query->whereNull('upvote_downvotes.is_upvote')
+                    ->orWhere('upvote_downvotes.is_upvote','=',1);
+            })
+            ->where('active', '=', 1)
+            ->whereDate('published_at', '<', Carbon::now())
+            ->orderByDesc('upvote_count')
+            ->groupBy('posts.id')
+            ->limit(5)
+            ->get();
+
+        // if authorized - show recomended based on user upvotes
+
+        // Not authorized - popular posts based on views
+
+        // show recent categories with their latest posts
+
+        return view( 'home', compact('latestPost', 'popularPosts') );
     }
 
 
