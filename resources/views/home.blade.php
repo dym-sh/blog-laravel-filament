@@ -8,10 +8,10 @@
     >
 
     <div class="container max-w-4xl mx-auto py-6">
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
 
             {{-- Latest Post --}}
-            <div class="col-span-2">
+            <div class="col-span-2 mb-2">
                 <h2 class="text-lg sm:text-xl font-bold text-blue-500 uppercase pb-1 border-b-2 border-blue-500 mb-3">
                     Latest Post
                 </h2>
@@ -55,18 +55,35 @@
         </div>
 
         {{-- recomended posts --}}
-        <div>
+        <div class="mb-4">
             <h2 class="text-lg sm:text-xl font-bold text-blue-500 uppercase pb-1 border-b-2 border-blue-500 mb-3">
-                recomended posts
             </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3">
+                @foreach ($recomendedPosts as $post)
+                    <x-post-item :post="$post" :show-author="false"/>
+                @endforeach
+            </div>
         </div>
 
         {{-- latest categories --}}
-        <div>
-            <h2 class="text-lg sm:text-xl font-bold text-blue-500 uppercase pb-1 border-b-2 border-blue-500 mb-3">
-                latest categories
-            </h2>
-        </div>
+        @foreach ($categories as $category)
+            <div class="mb-6">
+                <h2 class="text-lg sm:text-xl font-bold text-blue-500 uppercase pb-1 border-b-2 border-blue-500 mb-3">
+                    Posts for category "{{ $category->title }}"
+                    <a href="{{ route('by-category', $category) }}">
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </h2>
+                <div class="text-lg text-center">
+
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+                    @foreach ($category->publishedPosts as $post)
+                        <x-post-item :post="$post" :show-author="false"/>
+                    @endforeach
+                </div>
+            </div>
+        @endforeach
     </div>
 
 </x-app-layout>

@@ -41,12 +41,69 @@ class PostController extends Controller
             ->get();
 
         // if authorized - show recomended based on user upvotes
+        $user = auth()->user();
 
-        // Not authorized - popular posts based on views
+        if( $user ) {
+            $leftJoin = '(
+            select
+          distinct cp.post_id
+                 , cp.category_id
+              from upvote_downvotes
+              join category_post cp
+                on upvote_downvotes.post_id = cp.post_id
+             where upvote_downvotes.is_upvote = 1
+               and upvote_downvotes.user_id = ?
+                 ) as t';
+            $recomendedPosts = Post::query()
+                ->leftJoin('category_post as cp', 'posts.id', '=', 'cp.post_id')
+                ->leftJoin(DB::raw($leftJoin), function($join) {
+                    $join->on('t.category_id', '=', 'cp.category_id')
+                    ->on('t.post_id', '!=', 'cp.post_id');
+                })
+                ->select('posts.*')
+                ->where( 'posts.id', '!=', DB::raw('t.post_id'))
+                ->setBindings([$user->id])
+                ->limit(3)
+                ->get();
+        } else {
+            // Not authorized - popular posts based on views
+            $recomendedPosts = Post::query()
+                ->leftJoin('post_views', 'posts.id', '=', 'post_views.post_id')
+                ->select('posts.*', DB::raw('count(post_views.id) as view_count'))
+                ->where('active', '=', 1)
+                ->whereDate('published_at', '<', Carbon::now())
+                ->orderByDesc('view_count')
+                ->groupBy('posts.id')
+                ->limit(3)
+                ->get();
+        }
 
         // show recent categories with their latest posts
+        $categories = Category::query()
+            ->whereHas('posts', function($query){
+                $query
+                    ->where('active', '=', 1)
+                    ->whereDate('published_at', '<', Carbon::now());
+            })
+            ->with(['posts' => function($query){
+                $query->orderByDesc('published_at');
+            }])
+            ->select('categories.*')
+            ->selectRaw('max(posts.published_at) as max_date')
+            ->leftJoin('category_post', 'categories.id', '=', 'category_post.category_id')
+            ->leftJoin('posts', 'posts.id', '=', 'category_post.post_id')
+            ->orderByDesc('max_date')
+            ->groupBy('categories.id')
+            ->limit(5)
+            ->get();
 
-        return view( 'home', compact('latestPost', 'popularPosts') );
+
+        return view( 'home', compact(
+            'latestPost',
+            'popularPosts',
+            'recomendedPosts',
+            'categories'
+        ) );
     }
 
 
