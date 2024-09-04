@@ -98,6 +98,14 @@
         </div>
     </nav>
 
+    <div class="container mx-auto py-6">
+        <form method="get" action="{{ route('search') }}">
+            <input name="q" value="{{ request()->get('q') }}"
+                placeholder="Search"
+                class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
+                />
+        </form>
+    </div>
 
     <div class="container mx-auto flex flex-wrap py-6">
 
