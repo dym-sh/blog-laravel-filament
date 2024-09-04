@@ -15,13 +15,17 @@
                     {{ $comment->created_at->diffForHumans() }}
                 </span>
             </div>
+            @if( $editing )
+                <livewire:comment-create :comment-model="$comment"/>
+            @else
             <div class="text-gray-700">
                 {{ $comment->comment }}
             </div>
+            @endif
             <div>
                 <a href="#" class="text-sm text-indigo-600 mr-3">Reply</a>
                 @if( \Illuminate\Support\Facades\Auth::id() == $comment->user_id )
-                    <a href="#" class="text-sm text-blue-600 mr-3">Edit</a>
+                    <a wire:click.prevent="startCommentEdit" href="#" class="text-sm text-blue-600 mr-3">Edit</a>
                     <a wire:click.prevent="deleteComment" href="#" class="text-sm text-red-600">Delete</a>
                 @endif
             </div>
