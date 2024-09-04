@@ -56,6 +56,15 @@
                 </div>
 
                 <div class="flex items-center ms-6">
+
+                    <div class="max-w-4xl mx-auto">
+                        <form method="get" action="{{ route('search') }}">
+                            <input name="q" value="{{ request()->get('q') }}"
+                                placeholder="Search"
+                                class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6 font-medium"
+                                />
+                        </form>
+                    </div>
                     @auth
                         <x-dropdown align="right" width="48">
                             <x-slot name="trigger">
@@ -97,15 +106,6 @@
             </div>
         </div>
     </nav>
-
-    <div class="container mx-auto py-6">
-        <form method="get" action="{{ route('search') }}">
-            <input name="q" value="{{ request()->get('q') }}"
-                placeholder="Search"
-                class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 sm:text-sm sm:leading-6"
-                />
-        </form>
-    </div>
 
     <div class="container mx-auto flex flex-wrap py-6">
 

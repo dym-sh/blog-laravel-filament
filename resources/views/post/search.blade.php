@@ -11,12 +11,19 @@
         <a href="{{ route('view', $post) }}">
           <h2 class="text-blue-500 font-bold text-lg sm:text-xl mb-2">
             {!! preg_replace(
-                '/('.request()->get('q').')/i'
-              , '<span class="bg-yellow-400">${1}</span>'
-              , $post->title ) !!}
+                    '/('.request()->get('q').')/i'
+                  , '<span class="bg-yellow-400">${1}</span>'
+                  , $post->title
+                )
+            !!}
           </h2>
           <div>
-            {{ $post->shortBody() }}
+            {!! preg_replace(
+                    '/('.request()->get('q').')/i'
+                  , '<span class="bg-yellow-400">${1}</span>'
+                  , $post->shortBody()
+                )
+            !!}
           </div>
         </a>
         <hr class="my-4">
