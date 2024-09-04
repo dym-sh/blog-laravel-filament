@@ -9,10 +9,10 @@
         <div>
             <div class="flex gap-3">
                 <a href="#" class="font-semibold text-indigo-600">
-                    {{ $comment->user->name }}
+                    {{ $comment->user?->name }}
                 </a>
                 <span class="text-gray-500">
-                    {{ $comment->created_at->diffForHumans() }}
+                    {{ $comment->created_at?->diffForHumans() }}
                 </span>
             </div>
             @if( $editing )
@@ -23,12 +23,32 @@
             </div>
             @endif
             <div>
-                <a href="#" class="text-sm text-indigo-600 mr-3">Reply</a>
+                <a wire:click.prevent="startReply"
+                    href="#" class="text-sm text-indigo-600 mr-3"
+                    >Reply</a>
                 @if( \Illuminate\Support\Facades\Auth::id() == $comment->user_id )
                     <a wire:click.prevent="startCommentEdit" href="#" class="text-sm text-blue-600 mr-3">Edit</a>
                     <a wire:click.prevent="deleteComment" href="#" class="text-sm text-red-600">Delete</a>
                 @endif
             </div>
+            @if( $reply )
+                <livewire:comment-create
+                    :post="$comment->post"
+                    :parent-comment="$comment"
+                    />
+            @endif
+
+            @if( $comment->comments->count() )
+                <div class="mt-4">
+                    @foreach ($comment->comments as $childComment)
+                        <livewire:comment-item
+                            :comment="$childComment"
+                            wire:key="comment-{{ $childComment->id }}"
+                            />
+                    @endforeach
+                </div>
+            @endif
         </div>
     </div>
+
 </div>

@@ -20,9 +20,7 @@ class Comments extends Component
 
     public function mount( Post $post ) {
         $this->post = $post;
-        $this->comments = Comment::where('post_id', '=', $this->post->id)
-            ->orderByDesc('created_at')
-            ->get();
+        $this->comments = $this->selectComments();
     }
 
     public function render()
@@ -33,15 +31,22 @@ class Comments extends Component
     #[On('commentCreated')]
     public function commentCreated( int $id ) {
         $comment = Comment::where('id', '=', $id)->first();
-        $this->comments = $this->comments->prepend($comment);
+        if( !$comment->parent_id ) {
+            $this->comments = $this->comments->prepend($comment);
+        }
     }
 
     #[On('commentDeleted')]
     public function commentDeleted( int $id )
     {
-        $this->comments = $this->comments->reject(
-            function($comment, int $key) use ($id) {
-                return $comment->id == $id;
-            });
+        $this->comments =  $this->selectComments();
+    }
+
+    public function selectComments(){
+        return Comment::where('post_id', '=', $this->post->id)
+            ->with(['post', 'user'])
+            ->whereNull('parent_id')
+            ->orderByDesc('created_at')
+            ->get();
     }
 }

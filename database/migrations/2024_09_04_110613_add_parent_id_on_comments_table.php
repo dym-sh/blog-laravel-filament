@@ -11,9 +11,8 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('posts', function (Blueprint $table) {
-            $table->string('meta_title', 255)->nullable();
-            $table->string('meta_description', 255)->nullable();
+        Schema::table('comments', function (Blueprint $table) {
+            $table->foreignId('parent_id')->nullable()->constrained('comments');
         });
     }
 
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        //
+        Schema::table('comments', function (Blueprint $table) {
+            $table->dropColumn('parent_id');
+        });
     }
 };

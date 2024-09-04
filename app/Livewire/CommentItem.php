@@ -10,9 +10,11 @@ class CommentItem extends Component
     public Comment $comment;
 
     public bool $editing = false;
+    public bool $reply = false;
     protected $listeners = [
         'cancelEditing' => 'cancelEditing',
         'commentUpdated' => 'commentUpdated',
+        'commentCreated' => 'commentCreated',
     ];
 
     public function mount(Comment $comment)
@@ -50,10 +52,21 @@ class CommentItem extends Component
     public function cancelEditing()
     {
         $this->editing = false;
+        $this->reply = false;
     }
 
     public function commentUpdated()
     {
         $this->editing = false;
+    }
+
+    public function startReply()
+    {
+        $this->reply = true;
+    }
+
+    public function commentCreated()
+    {
+        $this->reply = false;
     }
 }

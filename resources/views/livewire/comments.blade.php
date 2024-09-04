@@ -4,7 +4,7 @@
     @foreach ($comments as $comment)
         <livewire:comment-item
             :comment="$comment"
-            wire:key="comment-{{ $comment->id }}"
+            wire:key="comment-{{ $comment->id }}-{{ $comment->comments->count() }}-{{ time() }}"
             />
     @endforeach
 </div>
